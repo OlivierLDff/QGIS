@@ -115,6 +115,7 @@ QgsLayoutToImageAlgorithm *QgsLayoutToImageAlgorithm::createInstance() const
 
 QVariantMap QgsLayoutToImageAlgorithm::processAlgorithm( const QVariantMap &parameters, QgsProcessingContext &context, QgsProcessingFeedback *feedback )
 {
+#ifndef QT_NO_PRINTER
   // this needs to be done in main thread, layouts are not thread safe
   QgsPrintLayout *l = parameterAsLayout( parameters, QStringLiteral( "LAYOUT" ), context );
   if ( !l )
@@ -184,6 +185,9 @@ QVariantMap QgsLayoutToImageAlgorithm::processAlgorithm( const QVariantMap &para
   QVariantMap outputs;
   outputs.insert( QStringLiteral( "OUTPUT" ), dest );
   return outputs;
+#else
+  return QVariantMap();
+#endif
 }
 
 ///@endcond

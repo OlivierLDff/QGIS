@@ -120,6 +120,7 @@ QgsLayoutToPdfAlgorithm *QgsLayoutToPdfAlgorithm::createInstance() const
 
 QVariantMap QgsLayoutToPdfAlgorithm::processAlgorithm( const QVariantMap &parameters, QgsProcessingContext &context, QgsProcessingFeedback *feedback )
 {
+#ifndef QT_NO_PRINTER
   // this needs to be done in main thread, layouts are not thread safe
   QgsPrintLayout *l = parameterAsLayout( parameters, QStringLiteral( "LAYOUT" ), context );
   if ( !l )
@@ -196,6 +197,9 @@ QVariantMap QgsLayoutToPdfAlgorithm::processAlgorithm( const QVariantMap &parame
   QVariantMap outputs;
   outputs.insert( QStringLiteral( "OUTPUT" ), dest );
   return outputs;
+#else
+  return QVariantMap();
+#endif
 }
 
 ///@endcond

@@ -123,6 +123,7 @@ QgsLayoutAtlasToImageAlgorithm *QgsLayoutAtlasToImageAlgorithm::createInstance()
 
 QVariantMap QgsLayoutAtlasToImageAlgorithm::processAlgorithm( const QVariantMap &parameters, QgsProcessingContext &context, QgsProcessingFeedback *feedback )
 {
+#ifndef QT_NO_PRINTER
   // this needs to be done in main thread, layouts are not thread safe
   QgsPrintLayout *l = parameterAsLayout( parameters, QStringLiteral( "LAYOUT" ), context );
   if ( !l )
@@ -248,6 +249,9 @@ QVariantMap QgsLayoutAtlasToImageAlgorithm::processAlgorithm( const QVariantMap 
   QVariantMap outputs;
   outputs.insert( QStringLiteral( "FOLDER" ), directory );
   return outputs;
+#else
+  return QVariantMap();
+#endif
 }
 
 ///@endcond
